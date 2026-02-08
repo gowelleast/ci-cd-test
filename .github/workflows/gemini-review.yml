@@ -30,6 +30,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          gemini_model: gemini-2.5-flash # 무료 티어에서 사용 가능한 모델
           prompt: |
             이 Pull Request의 변경 사항을 리뷰해주세요.
             코드 품질, 버그 가능성, 보안 이슈, 개선 사항을 확인하고
