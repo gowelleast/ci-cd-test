@@ -1,0 +1,33 @@
+# 워크플로우 이름 (GitHub UI에 표시됨)
+name: CI
+
+# 언제 실행할 것인가
+on:
+  pull_request: # PR이 생성되거나 업데이트될 때
+    branches: [main] # main 브랜치로 향하는 PR만 대상
+
+# 무엇을 실행할 것인가 (각 job은 독립된 서버에서 병렬 실행)
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest # GitHub이 제공하는 리눅스 서버에서 실행
+    steps:
+      - uses: actions/checkout@v4 # PR의 코드를 서버에 내려받기
+      - uses: actions/setup-node@v4 # Node.js 설치
+        with:
+          node-version: 20 # Node 20 버전 사용
+          cache: yarn # yarn 캐시 활용 (속도 향상)
+      - run: yarn install --frozen-lockfile # 의존성 설치 (lockfile 고정)
+      - run: yarn lint # ESLint로 코드 품질 검사
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn build # vite build로 빌드 성공 여부 확인

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
 
 const pipelines = [
@@ -14,11 +14,7 @@ function StatusBadge({ status }) {
 
 function App() {
   const [buildNumber, setBuildNumber] = useState(42)
-  const [lastDeployed, setLastDeployed] = useState('')
-
-  useEffect(() => {
-    setLastDeployed(new Date().toLocaleString())
-  }, [])
+  const lastDeployed = new Date().toLocaleString()
 
   return (
     <div className="app">

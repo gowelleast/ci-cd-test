@@ -1,0 +1,35 @@
+# Gemini AI를 활용한 PR 코드 리뷰
+name: Gemini Review
+
+# PR이 생성되거나 업데이트될 때 실행
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+# 같은 PR에 대해 중복 실행 방지 (새 커밋이 오면 이전 실행 취소)
+concurrency:
+  group: 'gemini-review-${{ github.event.pull_request.number }}'
+  cancel-in-progress: true
+
+jobs:
+  review:
+    name: Gemini AI Review
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    permissions:
+      contents: read # 코드를 읽기 위해 필요
+      pull-requests: write # PR에 리뷰 코멘트를 달기 위해 필요
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Gemini PR Review
+        uses: google-github-actions/run-gemini-cli@v0
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          prompt: |
+            이 Pull Request의 변경 사항을 리뷰해주세요.
+            코드 품질, 버그 가능성, 보안 이슈, 개선 사항을 확인하고
+            PR에 리뷰 코멘트를 남겨주세요.
+            한국어로 작성해주세요.
