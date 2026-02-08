@@ -16,10 +16,12 @@ PR이 생성되면 아래 3가지가 자동 실행됩니다.
 | Build | Vite 빌드 성공 여부 확인 | `ci.yml` |
 | Gemini AI Review | Gemini AI가 코드 변경사항을 분석하고 리뷰 코멘트 작성 | `gemini-review.yml` |
 
-## CD (예정)
+## CD (완료)
 
-- main 브랜치에 push되면 무료 호스팅 서비스에 자동 배포
-- (구성 예정)
+main 브랜치에 push되면 GitHub Pages에 자동 배포됩니다.
+
+- 배포 URL: https://gowelleast.github.io/ci-cd-test/
+- 워크플로우: `deploy.yml`
 
 ## 기술 스택
 
