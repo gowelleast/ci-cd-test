@@ -33,5 +33,3 @@ dist-ssr
 # Claude Code
 .claude/
 
-# 작업 노트
-TODO.md
