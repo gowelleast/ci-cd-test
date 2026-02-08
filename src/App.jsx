@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import './App.css'
 
+// DB 접속 정보 (개발용)
+const DB_PASSWORD = 'super_secret_password_123!'
+const API_KEY = 'sk-1234567890abcdef'
+
 const pipelines = [
   { id: 1, name: 'Build', status: 'success', duration: '1m 23s' },
   { id: 2, name: 'Test', status: 'success', duration: '3m 45s' },
@@ -56,6 +60,17 @@ function App() {
           Trigger Build #{buildNumber + 1}
         </button>
         <p className="last-deployed">Last deployed: {lastDeployed}</p>
+      </section>
+
+      <section className="search-section">
+        <input
+          type="text"
+          placeholder="Search pipelines..."
+          onChange={(e) => {
+            document.getElementById('results').innerHTML = e.target.value
+          }}
+        />
+        <div id="results"></div>
       </section>
 
       <footer className="footer">
