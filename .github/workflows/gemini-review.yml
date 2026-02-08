@@ -23,16 +23,53 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 변경 사항(diff) 비교를 위해 전체 히스토리 필요
 
       - name: Run Gemini PR Review
         uses: google-github-actions/run-gemini-cli@v0
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           gemini_model: gemini-2.5-flash # 무료 티어에서 사용 가능한 모델
+          # GitHub MCP 서버를 통해 PR에 리뷰 코멘트를 남길 수 있도록 설정
+          settings: |-
+            {
+              "mcpServers": {
+                "github": {
+                  "command": "docker",
+                  "args": [
+                    "run", "-i", "--rm",
+                    "-e", "GITHUB_PERSONAL_ACCESS_TOKEN",
+                    "ghcr.io/github/github-mcp-server:v0.27.0"
+                  ],
+                  "includeTools": [
+                    "add_comment_to_pending_review",
+                    "pull_request_read",
+                    "pull_request_review_write"
+                  ],
+                  "env": {
+                    "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+                  }
+                }
+              }
+            }
           prompt: |
-            이 Pull Request의 변경 사항을 리뷰해주세요.
-            코드 품질, 버그 가능성, 보안 이슈, 개선 사항을 확인하고
-            PR에 리뷰 코멘트를 남겨주세요.
-            한국어로 작성해주세요.
+            ## 역할
+            당신은 GitHub Pull Request 코드 리뷰어입니다.
+
+            ## 입력 정보
+            - GitHub 저장소: ${{ github.repository }}
+            - PR 번호: ${{ github.event.pull_request.number }}
+
+            ## 실행 순서
+            1. pull_request_read 도구로 PR의 diff를 가져오세요.
+            2. 변경된 코드를 분석하세요: 버그, 보안 이슈, 코드 품질, 개선 사항을 확인하세요.
+            3. pull_request_review_write 도구로 PR에 리뷰를 제출하세요.
+               - event는 반드시 "COMMENT"를 사용하세요.
+               - 리뷰 본문은 한국어로 작성하세요.
+               - 변경 사항에 대한 요약과 피드백을 포함하세요.
