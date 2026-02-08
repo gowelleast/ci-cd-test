@@ -25,3 +25,6 @@ dist-ssr
 
 # Gemini CLI
 .gemini/
+
+# 작업 노트
+TODO.md
