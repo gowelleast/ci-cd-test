@@ -1,10 +1,6 @@
 import { useState } from 'react'
 import './App.css'
 
-// DB 접속 정보 (개발용)
-const DB_PASSWORD = 'super_secret_password_123!'
-const API_KEY = 'sk-1234567890abcdef'
-
 const pipelines = [
   { id: 1, name: 'Build', status: 'success', duration: '1m 23s' },
   { id: 2, name: 'Test', status: 'success', duration: '3m 45s' },
@@ -18,6 +14,7 @@ function StatusBadge({ status }) {
 
 function App() {
   const [buildNumber, setBuildNumber] = useState(42)
+  const [searchQuery, setSearchQuery] = useState('')
   const lastDeployed = new Date().toLocaleString()
 
   return (
@@ -66,11 +63,9 @@ function App() {
         <input
           type="text"
           placeholder="Search pipelines..."
-          onChange={(e) => {
-            document.getElementById('results').innerHTML = e.target.value
-          }}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <div id="results"></div>
+        <div>{searchQuery}</div>
       </section>
 
       <footer className="footer">
