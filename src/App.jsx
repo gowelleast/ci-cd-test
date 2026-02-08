@@ -14,7 +14,6 @@ function StatusBadge({ status }) {
 
 function App() {
   const [buildNumber, setBuildNumber] = useState(42)
-  const [searchQuery, setSearchQuery] = useState('')
   const lastDeployed = new Date().toLocaleString()
 
   return (
@@ -57,15 +56,6 @@ function App() {
           Trigger Build #{buildNumber + 1}
         </button>
         <p className="last-deployed">Last deployed: {lastDeployed}</p>
-      </section>
-
-      <section className="search-section">
-        <input
-          type="text"
-          placeholder="Search pipelines..."
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <div>{searchQuery}</div>
       </section>
 
       <footer className="footer">
