@@ -59,7 +59,7 @@ function App() {
       </section>
 
       <footer className="footer">
-        <p>CICD Test Page &mdash; v1.0.0</p>
+        <p>CICD Test Page &mdash; v1.0.1</p>
       </footer>
     </div>
   )
