@@ -15,6 +15,7 @@ function StatusBadge({ status }) {
 function App() {
   const [buildNumber, setBuildNumber] = useState(42)
   const lastDeployed = new Date().toLocaleString()
+  const unusedVariable = 'this variable is never used'
 
   return (
     <div className="app">
