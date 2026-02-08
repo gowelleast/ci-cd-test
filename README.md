@@ -1,16 +1,28 @@
-# React + Vite
+# CI/CD Test
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+GitHub Actions를 활용한 CI/CD 파이프라인 학습 및 테스트 프로젝트
 
-Currently, two official plugins are available:
+## 목표
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+PR 생성 시 자동으로 실행되는 CI와, main 브랜치 push 시 자동 배포되는 CD를 구성한다.
 
-## React Compiler
+## CI (완료)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+PR이 생성되면 아래 3가지가 자동 실행됩니다.
 
-## Expanding the ESLint configuration
+| 체크 | 설명 | 워크플로우 |
+|------|------|-----------|
+| Lint | ESLint로 코드 품질 검사 | `ci.yml` |
+| Build | Vite 빌드 성공 여부 확인 | `ci.yml` |
+| Gemini AI Review | Gemini AI가 코드 변경사항을 분석하고 리뷰 코멘트 작성 | `gemini-review.yml` |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## CD (예정)
+
+- main 브랜치에 push되면 무료 호스팅 서비스에 자동 배포
+- (구성 예정)
+
+## 기술 스택
+
+- React + Vite
+- GitHub Actions
+- Google Gemini API (AI 코드 리뷰)
