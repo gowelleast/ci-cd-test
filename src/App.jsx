@@ -1,34 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
 
+const pipelines = [
+  { id: 1, name: 'Build', status: 'success', duration: '1m 23s' },
+  { id: 2, name: 'Test', status: 'success', duration: '3m 45s' },
+  { id: 3, name: 'Deploy to Staging', status: 'success', duration: '2m 10s' },
+  { id: 4, name: 'Deploy to Production', status: 'running', duration: '0m 42s' },
+]
+
+function StatusBadge({ status }) {
+  return <span className={`badge badge-${status}`}>{status}</span>
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [buildNumber, setBuildNumber] = useState(42)
+  const [lastDeployed, setLastDeployed] = useState('')
+
+  useEffect(() => {
+    setLastDeployed(new Date().toLocaleString())
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="app">
+      <header className="header">
+        <h1>CICD</h1>
+        <p className="subtitle">Continuous Integration & Deployment Dashboard</p>
+      </header>
+
+      <section className="stats">
+        <div className="stat-card">
+          <span className="stat-value">{buildNumber}</span>
+          <span className="stat-label">Total Builds</span>
+        </div>
+        <div className="stat-card">
+          <span className="stat-value success-text">95%</span>
+          <span className="stat-label">Success Rate</span>
+        </div>
+        <div className="stat-card">
+          <span className="stat-value">2m 15s</span>
+          <span className="stat-label">Avg. Duration</span>
+        </div>
+      </section>
+
+      <section className="pipeline-section">
+        <h2>Pipeline Status</h2>
+        <div className="pipeline-list">
+          {pipelines.map((p) => (
+            <div key={p.id} className="pipeline-row">
+              <span className="pipeline-name">{p.name}</span>
+              <span className="pipeline-duration">{p.duration}</span>
+              <StatusBadge status={p.status} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="deploy-section">
+        <button className="deploy-btn" onClick={() => setBuildNumber((n) => n + 1)}>
+          Trigger Build #{buildNumber + 1}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+        <p className="last-deployed">Last deployed: {lastDeployed}</p>
+      </section>
+
+      <footer className="footer">
+        <p>CICD Test Page &mdash; v1.0.0</p>
+      </footer>
+    </div>
   )
 }
 
